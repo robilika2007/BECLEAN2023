@@ -54,11 +54,11 @@ public class OpMode extends LinearOpMode {
     {
         TrajectorySequenceBuilder trajBuilder = drive.trajectorySequenceBuilder(START_POSE);
         trajBuilder
-                .forward(20)
-                .turn(Math.toRadians(90))
-                .forward(10)
+                .forward(90)
+                .turn(Math.toRadians(-90))
+                .forward(48)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    glis.setTargetPosition(10);
+                    glis.setTargetPosition(1500);
                     glis.setPower(1);
 
                     cleste.setPosition(cDeschis);
@@ -77,13 +77,41 @@ public class OpMode extends LinearOpMode {
                        }
                        cleste.setPosition(cDeschis);
 
-                       glis.setTargetPosition(poz + dif);
+                       glis.setTargetPosition(poz - dif);
                        glis.setPower(1);
                         //eventual mai baga un wait aici
                        joint.setPosition(jDefault);
                        cleste.setPosition(cDeschis);
                    }
-                });
+                })
+                .forward(48) //merge la al doilea junction
+        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+        glis.setTargetPosition(1500);
+        glis.setPower(1);
+
+        cleste.setPosition(cDeschis);
+        for(int i = 0; i < 20; ++i)
+        {
+            cleste.setPosition(cInchis);
+            int poz = glis.getCurrentPosition();
+            glis.setTargetPosition(sus);
+
+            while(glis.isBusy());
+            joint.setPosition(jDrop);
+            try {
+                wait(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cleste.setPosition(cDeschis);
+
+            glis.setTargetPosition(poz - dif);
+            glis.setPower(1);
+            //eventual mai baga un wait aici
+            joint.setPosition(jDefault);
+            cleste.setPosition(cDeschis);
+        }
+    });
         return trajBuilder.build();
     }
 }
