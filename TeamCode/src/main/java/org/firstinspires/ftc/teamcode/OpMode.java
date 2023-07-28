@@ -79,7 +79,7 @@ public class OpMode extends LinearOpMode {
 
                        glis.setTargetPosition(poz + dif);
                        glis.setPower(1);
-
+                        //eventual mai baga un wait aici
                        joint.setPosition(jDefault);
                        cleste.setPosition(cDeschis);
                    }
