@@ -56,6 +56,7 @@ public class OpMode extends LinearOpMode {
         trajBuilder
                 .forward(20)
                 .turn(Math.toRadians(90))
+                .forward(10)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     glis.setTargetPosition(10);
                     glis.setPower(1);
