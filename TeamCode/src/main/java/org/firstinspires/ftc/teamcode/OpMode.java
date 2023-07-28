@@ -84,6 +84,9 @@ public class OpMode extends LinearOpMode {
                        cleste.setPosition(cDeschis);
                    }
                 })
+                .waitSeconds(70)
+                .back(10);
+                /*
                 .forward(48) //merge la al doilea junction
         .UNSTABLE_addTemporalMarkerOffset(0, () -> {
         glis.setTargetPosition(1500);
@@ -112,6 +115,8 @@ public class OpMode extends LinearOpMode {
             cleste.setPosition(cDeschis);
         }
     });
+
+                 */
         return trajBuilder.build();
     }
 }
