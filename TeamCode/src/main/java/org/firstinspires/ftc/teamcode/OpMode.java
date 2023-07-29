@@ -25,8 +25,8 @@ public class OpMode extends LinearOpMode {
     public static double cInchis = 1;
     public static double cDeschis = 0.3;
 
-    public static int sus = 1500; //pozitia cand clestele este deasupra junctionului
-    public static int dif = 50; //diferenta intre pozitia a 2 conuri
+    public static int sus = 5050; //pozitia cand clestele este deasupra junctionului
+    public static int dif = 200; //diferenta intre pozitia a 2 conuri
 
     public SampleMecanumDrive drive;
 
@@ -56,7 +56,7 @@ public class OpMode extends LinearOpMode {
         trajBuilder
                 .lineToLinearHeading(new Pose2d(0,0,0))//puneti pozitia de la junction gasita cu localizationTest
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    glis.setTargetPosition(sus);
+                    glis.setTargetPosition(4400);
                     glis.setPower(1);
 
                     cleste.setPosition(cDeschis);
