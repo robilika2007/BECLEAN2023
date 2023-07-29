@@ -30,24 +30,15 @@ public class testGlis extends LinearOpMode {
         {
             joint.setPosition(jDefault);
 
-            if(gamepad1.left_trigger != 0 )
+            if(gamepad1.left_trigger != 0)
             {
-                glis.setPower(-0.35);
+                glis.setPower(-0.3);
+            }
+            else if(gamepad1.right_trigger != 0)
+            {
+                glis.setPower(0.3);
             }
             else
-            {
-                glis.setPower(0);
-            }
-            if(gamepad1.right_trigger != 0
-            )
-            {
-                glis.setPower(0.35);
-            }
-            else
-            {
-                glis.setPower(0);
-            }
-            if(gamepad1.a)
             {
                 glis.setPower(0);
             }
