@@ -41,7 +41,7 @@ public class OpMode extends LinearOpMode {
         cleste = this.hardwareMap.get(Servo.class, "cleste");
 
         glis.setDirection(DcMotorSimple.Direction.FORWARD); //maybe need change
-        glis.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        glis.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
 
@@ -57,7 +57,9 @@ public class OpMode extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(0,0,0))//puneti pozitia de la junction gasita cu localizationTest
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     glis.setTargetPosition(4400);
+                    glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     glis.setPower(1);
+
 
                     cleste.setPosition(cDeschis);
                    for(int i = 0; i < 20; ++i)
@@ -65,6 +67,8 @@ public class OpMode extends LinearOpMode {
                        cleste.setPosition(cInchis);
                        int poz = glis.getCurrentPosition();
                        glis.setTargetPosition(sus);
+                       glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                       glis.setPower(1);
 
                        while(glis.isBusy());
                        joint.setPosition(jDrop);
@@ -72,6 +76,7 @@ public class OpMode extends LinearOpMode {
                        cleste.setPosition(cDeschis);
 
                        glis.setTargetPosition(poz - dif);
+                       glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                        glis.setPower(1);
                        sleep(100); //puteti schimba asta daca nu are destul timp sa arunce conu din cleste
                        joint.setPosition(jDefault);
