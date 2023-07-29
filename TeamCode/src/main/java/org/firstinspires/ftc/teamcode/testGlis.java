@@ -30,13 +30,26 @@ public class testGlis extends LinearOpMode {
         {
             joint.setPosition(jDefault);
 
-            if(gamepad1.left_trigger != 0)
+            if(gamepad1.left_trigger != 0 )
             {
-                glis.setPower(-0.3);
+                glis.setPower(-0.35);
             }
-            if(gamepad1.right_trigger != 0)
+            else
             {
-                glis.setPower(0.3);
+                glis.setPower(0);
+            }
+            if(gamepad1.right_trigger != 0
+            )
+            {
+                glis.setPower(0.35);
+            }
+            else
+            {
+                glis.setPower(0);
+            }
+            if(gamepad1.a)
+            {
+                glis.setPower(0);
             }
             telemetry.addData("poz ", glis.getCurrentPosition());
             telemetry.update();
