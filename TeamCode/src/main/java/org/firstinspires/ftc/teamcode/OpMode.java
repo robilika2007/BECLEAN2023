@@ -22,11 +22,11 @@ public class OpMode extends LinearOpMode {
     public static Pose2d START_POSE = new Pose2d(0, 0, 0);
     public static double jDefault = 0.5; //clestele paralel cu pamantu
     public static double jDrop = 1; //pozitie de drop
-    public static double cInchis = 1; //pozitie de drop
-    public static double cDeschis = 0.3; //pozitie de drop
+    public static double cInchis = 1;
+    public static double cDeschis = 0.3;
 
-    public static int sus = 1500;
-    public static int dif = 10; //diferenta intre pozitia a 2 conuri
+    public static int sus = 1500; //pozitia cand clestele este deasupra junctionului
+    public static int dif = 50; //diferenta intre pozitia a 2 conuri
 
     public SampleMecanumDrive drive;
 
@@ -54,11 +54,9 @@ public class OpMode extends LinearOpMode {
     {
         TrajectorySequenceBuilder trajBuilder = drive.trajectorySequenceBuilder(START_POSE);
         trajBuilder
-                .forward(90)
-                .turn(Math.toRadians(-90))
-                .forward(48)
+                .lineToLinearHeading(new Pose2d(0,0,0))//puneti pozitia de la junction gasita cu localizationTest
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    glis.setTargetPosition(1500);
+                    glis.setTargetPosition(sus);
                     glis.setPower(1);
 
                     cleste.setPosition(cDeschis);
@@ -70,53 +68,16 @@ public class OpMode extends LinearOpMode {
 
                        while(glis.isBusy());
                        joint.setPosition(jDrop);
-                       try {
-                           wait(100);
-                       } catch (InterruptedException e) {
-                           e.printStackTrace();
-                       }
+                       sleep(100);
                        cleste.setPosition(cDeschis);
 
                        glis.setTargetPosition(poz - dif);
                        glis.setPower(1);
-                        //eventual mai baga un wait aici
+                       sleep(100); //puteti schimba asta daca nu are destul timp sa arunce conu din cleste
                        joint.setPosition(jDefault);
                        cleste.setPosition(cDeschis);
                    }
-                })
-                .waitSeconds(70)
-                .back(10);
-                /*
-                .forward(48) //merge la al doilea junction
-        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-        glis.setTargetPosition(1500);
-        glis.setPower(1);
-
-        cleste.setPosition(cDeschis);
-        for(int i = 0; i < 20; ++i)
-        {
-            cleste.setPosition(cInchis);
-            int poz = glis.getCurrentPosition();
-            glis.setTargetPosition(sus);
-
-            while(glis.isBusy());
-            joint.setPosition(jDrop);
-            try {
-                wait(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            cleste.setPosition(cDeschis);
-
-            glis.setTargetPosition(poz - dif);
-            glis.setPower(1);
-            //eventual mai baga un wait aici
-            joint.setPosition(jDefault);
-            cleste.setPosition(cDeschis);
-        }
-    });
-
-                 */
+                });
         return trajBuilder.build();
     }
 }
