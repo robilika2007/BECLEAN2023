@@ -54,7 +54,10 @@ public class OpMode extends LinearOpMode {
     {
         TrajectorySequenceBuilder trajBuilder = drive.trajectorySequenceBuilder(START_POSE);
         trajBuilder
-                .lineToLinearHeading(new Pose2d(0,0,0))//puneti pozitia de la junction gasita cu localizationTest
+                .forward(90)
+                .turn(Math.toRadians(-90))
+                .forward(48)
+                .strafeRight(5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     glis.setTargetPosition(4400);
                     glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -82,7 +85,40 @@ public class OpMode extends LinearOpMode {
                        joint.setPosition(jDefault);
                        cleste.setPosition(cDeschis);
                    }
-                });
+                })
+                .waitSeconds(70) //schimbati daca sta pe loc dupa ce termina de luat conurile de pe primu junction
+                .strafeLeft(5)
+                .forward(48) //merge la al 2-lea junction
+                .strafeRight(5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    glis.setTargetPosition(4400);
+                    glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    glis.setPower(1);
+
+
+                    cleste.setPosition(cDeschis);
+                    for(int i = 0; i < 20; ++i)
+                    {
+                        cleste.setPosition(cInchis);
+                        int poz = glis.getCurrentPosition();
+                        glis.setTargetPosition(sus);
+                        glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        glis.setPower(1);
+
+                        while(glis.isBusy());
+                        joint.setPosition(jDrop);
+                        sleep(100);
+                        cleste.setPosition(cDeschis);
+
+                        glis.setTargetPosition(poz - dif);
+                        glis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        glis.setPower(1);
+                        sleep(100); //puteti schimba asta daca nu are destul timp sa arunce conu din cleste
+                        joint.setPosition(jDefault);
+                        cleste.setPosition(cDeschis);
+                    }
+                })
+        .waitSeconds(60);
         return trajBuilder.build();
     }
 }
